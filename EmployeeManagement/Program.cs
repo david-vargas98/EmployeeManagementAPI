@@ -14,7 +14,21 @@ namespace EmployeeManagement
                 options => options.UseInMemoryDatabase("EmployeeDB") // arrow function to say that DB is in memory and named "EmployeeDB"
             );
 
+            // Creating CORS policy to allow requests from our Angular app
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyCors", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200") // Allow requests form our Angular app
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
+
+            // Using the CORS policy we created above
+            app.UseCors("MyCors");
 
             app.MapGet("/", () => "Hello World!");
 
