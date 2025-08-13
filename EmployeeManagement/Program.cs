@@ -33,7 +33,23 @@ namespace EmployeeManagement
             // Enabling controllers
             builder.Services.AddControllers();
 
+            // Enables and creates the inner model for Swagger by finding the controllers and their endpoints
+            builder.Services.AddEndpointsApiExplorer();
+
+            // Takes the model above and generates the Swagger documentation and UI
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
+
+            // Swagger is only intented for development environment, so we check if we are in development environment
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger(); // Registers the Swagger middleware
+                app.UseSwaggerUI(config => // Provide us with an interactive UI to test the endpoints
+                {
+                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1"); // The endpoint where the Swagger JSON is generated
+                }); 
+            }
 
             // Using the CORS policy we created above
             app.UseCors("MyCors");
