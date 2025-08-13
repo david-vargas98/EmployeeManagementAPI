@@ -27,5 +27,25 @@ namespace EmployeeManagement.Repositories
         {
             return await _context.Employees.FindAsync(id);
         }
+
+        // For updating and deleting methods we don't have the async versions
+        // We keep async keyword and then in SaaveChangesAsync we await the changes to be saved
+        public async Task UpdateEmployeeAsync(Employee employee)
+        {
+            _context.Employees.Update(employee); // No uptade method in EF Core, it's not necessary since we only change the entity's state to modified in memory
+            await _context.SaveChangesAsync();   // so, it has no sense for update method to have an async version, since it doesn't do any I/O DB operation
+        }
+
+        public async Task DeleteEmployeeAsync(int id)
+        {
+            var employeeInDb = await _context.Employees.FindAsync(id);
+
+            if(employeeInDb == null)
+                throw new KeyNotFoundException($"Employee with ID {id} was not found.");
+
+            _context.Employees.Remove(employeeInDb); // The same as Update, it's just a memory operation, it changes the state to "Deleted" in changes tracker
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
