@@ -1,4 +1,5 @@
 using EmployeeManagement.Data;
+using EmployeeManagement.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement
@@ -24,6 +25,13 @@ namespace EmployeeManagement
                     .AllowAnyHeader();
                 });
             });
+
+            // - Registering the repository and its class implementation as a service to the Dependency Injection (DI) container
+            // - For each HTTP request, a new instance of EmployeeRepository will be created and when the HTTP request is done, the instance will get disposed
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            // Enabling controllers
+            builder.Services.AddControllers();
 
             var app = builder.Build();
 
