@@ -56,5 +56,16 @@ namespace EmployeeManagement.Controllers
 
             return NoContent(); // Returns a 204 No Content status code, i.e., I've done it but I have nothing to return
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Employee>> UpdateEmployeeAsync(int id, Employee employee)
+        {
+            if (id != employee.Id)
+                return BadRequest();
+
+            await _employeeRepository.UpdateEmployeeAsync(employee);
+
+            return CreatedAtAction(nameof(GetEmployeeById), new { id = employee.Id }, employee);
+        }
     }
 }
