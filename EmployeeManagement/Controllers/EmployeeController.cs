@@ -48,5 +48,13 @@ namespace EmployeeManagement.Controllers
             // and use the following id: "new { id = employee.Id }" to get that information, and finally, in http body we return the "employee" object
             return CreatedAtAction(nameof(GetEmployeeById), new { id = employee.Id }, employee);
         }
+
+        [HttpDelete("id")]
+        public async Task<ActionResult> DeleteEmployeeById(int id)
+        {
+            await _employeeRepository.DeleteEmployeeAsync(id);
+
+            return NoContent(); // Returns a 204 No Content status code, i.e., I've done it but I have nothing to return
+        }
     }
 }
