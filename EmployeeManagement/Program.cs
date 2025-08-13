@@ -48,13 +48,15 @@ namespace EmployeeManagement
                 app.UseSwaggerUI(config => // Provide us with an interactive UI to test the endpoints
                 {
                     config.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1"); // The endpoint where the Swagger JSON is generated
+                    config.RoutePrefix = string.Empty; // Makes the Swagger UI available at the root URL (http://localhost:5000/)
                 }); 
             }
 
             // Using the CORS policy we created above
             app.UseCors("MyCors");
 
-            app.MapGet("/", () => "Hello World!");
+            // Connects the controllers to the application's routing system
+            app.MapControllers();
 
             app.Run();
         }
