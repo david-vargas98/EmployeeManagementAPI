@@ -17,5 +17,15 @@ namespace EmployeeManagement.Repositories
             await _context.Employees.AddAsync(employee); // Adds the employee to the Employees DbSet in memory
             await _context.SaveChangesAsync(); // Saves the changes to the database asynchronously
         }
+
+        public async Task<IEnumerable<Employee>> GetAllAsync()
+        {
+            return await _context.Employees.ToListAsync(); // Retrieves all employees from the Employees DbSet asynchronously
+        }
+
+        public async Task<Employee?> GetByIdAsync(int id)
+        {
+            return await _context.Employees.FindAsync(id);
+        }
     }
 }
